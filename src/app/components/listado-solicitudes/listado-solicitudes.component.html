@@ -1,0 +1,134 @@
+<div class="container mt-3">
+    <div *ngIf="isLoading" class="loading-overlay">
+        <div class="text-center">
+            <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <button class="btn btn-primary" (click)="regresar()">Regresar</button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm">
+            <div class="card mb-4 border-0">
+                <div class="card-body">
+                    <form (ngSubmit)="onSubmit(solicitudForm)" #solicitudForm="ngForm">
+                        <div class="row">
+                            <input type="text" name="id" [(ngModel)]="nuevaSolicitud.id" hidden>
+
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="monto" class="form-label">Monto</label>
+                                    <input type="text" required name="monto" class="form-control" id="monto"
+                                        [(ngModel)]="nuevaSolicitud.monto" #monto="ngModel"
+                                        pattern="^\d+(\.\d{1,2})?$" (keypress)="soloNumeros($event)" />
+                                    <div *ngIf="monto.invalid && (monto.dirty || monto.touched)" class="text-danger">
+                                        <div *ngIf="monto.errors?.['required']">
+                                            El monto es requerido.
+                                        </div>
+                                        <div *ngIf="monto.errors?.['pattern']">
+                                            El monto debe ser un número válido (máximo dos decimales).
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                                <div class="mb-3">
+                                    <label for="plazo" class="form-label">Plazo</label>
+                                    <input type="text" required name="plazo" class="form-control" id="plazo"
+                                        [(ngModel)]="nuevaSolicitud.plazo" #plazo="ngModel" />
+                                    <div *ngIf="plazo.invalid && (plazo.dirty || plazo.touched)" class="text-danger">
+                                        <div *ngIf="plazo.errors?.['required']">
+                                            El plazo es requerido.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fecha_creacion" class="form-label">Fecha de Creación</label>
+                                    <input type="date" required name="fecha_creacion" class="form-control"
+                                        id="fecha_creacion" [(ngModel)]="nuevaSolicitud.fecha_creacion"
+                                        #fecha_creacion="ngModel" />
+                                    <div *ngIf="fecha_creacion.invalid && (fecha_creacion.dirty || fecha_creacion.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="fecha_creacion.errors?.['required']">
+                                            La fecha de creación es requerida.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="formaPago" class="form-label">Forma de Pago</label>
+                                    <select id="formaPago" required class="form-select" name="formaPago"
+                                        [(ngModel)]="nuevaSolicitud.formasDePago.id" #formaPagoControl="ngModel">
+                                        <option value="" disabled>Seleccione una opción</option>
+                                        <option *ngFor="let option of formaPago" [value]="option.id">{{ option.descripcion }}</option>
+                                    </select>
+                                    <div *ngIf="formaPagoControl.invalid && (formaPagoControl.dirty || formaPagoControl.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="formaPagoControl.errors?.['required']">
+                                            La forma de pago es requerida.
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="d-flex justify-content-center align-items-center mb-3">
+                                    <div class="d-grid gap-2 col-6 mx-auto">
+                                        <button class="btn btn-primary btn-lg" type="submit"
+                                            [disabled]="solicitudForm.invalid">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm" *ngIf="solicitudes.length > 0">
+            <table class="table">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">ID</th>
+                        <th scope="col">Monto</th>
+                        <th scope="col">Plazo</th>
+                        <th scope="col">Forma pago</th>
+                        <th scope="col">Fecha de Creación</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let solicitud of solicitudes" class="text-center">
+                        <th scope="row">{{ solicitud.id }}</th>
+                        <td>{{ solicitud.monto }}</td>
+                        <td>{{ solicitud.plazo }}</td>
+                        <td>{{ solicitud.formasDePago.descripcion }}</td>
+                        <td>{{ solicitud.fecha_creacion }}</td>
+                        <td>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-sm-3"><button type="button" class="btn btn-warning" (click)="editarSolicitud(solicitud)">Editar</button>
+                                </div>
+                                <div class="col-sm-3"><button type="button" class="btn btn-danger" (click)="deleteCliente(solicitud.id)">Eliminar</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm" *ngIf="solicitudes.length == 0">
+            <div class="alert alert-danger" role="alert">
+                El usuario no posee solicitudes
+              </div>
+        </div>
+    </div>
+</div>

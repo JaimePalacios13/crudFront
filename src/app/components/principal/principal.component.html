@@ -1,0 +1,21 @@
+<div class="container mt-3">
+    <div *ngIf="isLoading" class="loading-overlay">
+        <div class="text-center">
+            <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                <span class="visually-hidden">{{txtLoading}}</span>
+            </div>
+            <p>{{txtLoading}}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <app-formulario-cliente (alertaEmitida)="mostrarAlerta($event.icon, $event.title)" (clienteGuardado)="onClienteGuardado($event)" [startLoading]="startLoading" [txtLoading]="txtLoading"></app-formulario-cliente>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <app-tabla-clientes #tablaClientes></app-tabla-clientes>
+        </div>
+    </div>
+</div>

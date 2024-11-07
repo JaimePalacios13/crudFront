@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th>ID</th>
+                    <th>DUI</th>
+                    <th>NIT</th>
+                    <th>Nombre cliente</th>
+                    <th>Sexo</th>
+                    <th>Estado civil</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cliente of clientes" class="text-center">
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.dui }}</td>
+                    <td>{{ cliente.nit }}</td>
+                    <td>{{ cliente.nombres }} {{ cliente.apellidos }}</td>
+                    <td>{{ cliente.sexo }}</td>
+                    <td>{{ cliente.estadoCivil.descripcion }}</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-sm">
+                                <button class="btn btn-warning" (click)="editCliente(cliente)">Modificar</button>
+                            </div>
+                            <div class="col-sm">
+                                <button class="btn btn-warning" (click)="verSolicitud(cliente.id)">Solicitudes</button>
+                            </div>
+                            <div class="col-sm">
+                                <button class="btn btn-danger" (click)="deleteCliente(cliente.id)">Eliminar</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>        
+    </div>
+</div>
